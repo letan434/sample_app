@@ -11,6 +11,9 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @user = User.find_by id: params[:id]
+    return if @user
+    flash[:danger]= "user don't find"
+    redirect_to root_path
   end
 
   # GET /users/new
@@ -26,13 +29,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new user_params # Not the final implementation!
     if @user.save
+      flash[:success] =  "welcome to the sample app"
+      redirect_to @user
     # Handle a successful save.
     else
-    render :new
-    end
-    private
-    def user_params
-    params.require(:user).permit :name, :email, :password, :password_confirmation
+      render :new
     end
   end
 
@@ -61,10 +62,13 @@ class UsersController < ApplicationController
   end
   private
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by id: params[:id]
+    return if @user
+    flash[:danger]= "user don't find"
+    redirect_to root_path
   end
-
+  private
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit :name, :email, :password, :password_confirmation
   end
 end
