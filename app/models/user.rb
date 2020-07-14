@@ -7,4 +7,12 @@ class User < ApplicationRecord
     self.email.downcase!
   end
   has_secure_password
+  def User.digest string
+    cost =  if ActiveModel::SecurePassword.min_cost
+            BCrypt::Engine::MIN_COST
+            else
+            BCrypt::Engine.cost
+            end
+      BCrypt::Password.create string, cost: cost
+  end
 end

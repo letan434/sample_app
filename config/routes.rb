@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "/login", to: "sessions#new"
+  post "/login", to: "sessions#create"
+  delete "/logout", to: "sessions#destroy"
   #localhost:3000/users/:id
   resources :users
   #localhost:3000/help
